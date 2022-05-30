@@ -1,0 +1,33 @@
+{
+  "name": "fortknoxster-diefi-contracts",
+  "version": "1.0.0",
+  "description": "FortKnoxster DieFi smart contracts.",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FortKnoxster/fortknoxster-diefi-contracts.git"
+  },
+  "keywords": [
+    "DieFi",
+    "FortKnoxster"
+  ],
+  "author": "FortKnoxster Mickey Joe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FortKnoxster/fortknoxster-diefi-contracts/issues"
+  },
+  "homepage": "https://github.com/FortKnoxster/fortknoxster-diefi-contracts#readme",
+  "devDependencies": {
+    "@openzeppelin/contracts": "^4.6.0",
+    "truffle": "^5.1.67"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1"
+  }
+}
