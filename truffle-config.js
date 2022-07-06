@@ -17,7 +17,8 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
-
+ const PrivateKeyProvider = require("truffle-privatekey-provider");
+ require('dotenv').config()
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 //
 // const fs = require('fs');
@@ -74,6 +75,24 @@ module.exports = {
     //   network_id: 2111,   // This network is yours, in the cloud.
     //   production: true    // Treats this network as if it was a public net. (default: false)
     // }
+
+    mumbai: {
+      provider: () => new PrivateKeyProvider(process.env.PRIVATE_KEY, process.env.HTTPS_PROVIDER_URL),
+      network_id: 80001,
+      //gas: 3000000,
+      gasPrice: process.env.GAS_PRICE,
+      //timeoutBlocks: 200,
+      //networkCheckTimeout: 10000,
+      //  skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+      },
+    mainnet: {
+	    provider: () => new PrivateKeyProvider(process.env.PRIVATE_KEY, process.env.HTTPS_PROVIDER_URL),
+	    network_id: 137,
+      gasPrice: process.env.GAS_PRICE,        // Ropsten has a lower block limit than mainnet
+	    timeout: 1000000000,
+      timeoutBlocks: 1000,
+      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+	  },
   },
 
   // Set default mocha options here, use special reporters, etc.
