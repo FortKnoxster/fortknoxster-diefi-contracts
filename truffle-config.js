@@ -17,8 +17,20 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
- const PrivateKeyProvider = require("truffle-privatekey-provider");
- require('dotenv').config()
+ const HDWalletProvider = require("@truffle/hdwallet-provider");
+ require('dotenv').config();
+
+ /*
+ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
+ async function getGasPrices() {
+  const gasPrices = await fetch('https://gasstation-mainnet.matic.network/v2') 
+  console.log('gasPrices', gasPrices)
+ }
+
+ const prices = getGasPrices()
+ console.log('prices', prices)
+ */
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 //
 // const fs = require('fs');
@@ -42,11 +54,11 @@ module.exports = {
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
-    // development: {
-    //  host: "127.0.0.1",     // Localhost (default: none)
-    //  port: 8545,            // Standard Ethereum port (default: none)
-    //  network_id: "*",       // Any network (default: none)
-    // },
+     development: {
+      host: "127.0.0.1",     // Localhost (default: none)
+      port: 8545,            // Standard Ethereum port (default: none)
+      network_id: "*",       // Any network (default: none)
+    },
     //
     // An additional network, but with some advanced options…
     // advanced: {
@@ -77,16 +89,20 @@ module.exports = {
     // }
 
     mumbai: {
-      provider: () => new PrivateKeyProvider(process.env.PRIVATE_KEY, process.env.HTTPS_PROVIDER_URL),
+      provider: () => new HDWalletProvider(process.env.MNEMONIC, process.env.HTTPS_PROVIDER_URL),
       network_id: 80001,
-      //gas: 3000000,
-      gasPrice: process.env.GAS_PRICE,
-      //timeoutBlocks: 200,
-      //networkCheckTimeout: 10000,
-      //  skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
-      },
-    mainnet: {
-	    provider: () => new PrivateKeyProvider(process.env.PRIVATE_KEY, process.env.HTTPS_PROVIDER_URL),
+      //gasPrice: process.env.GAS_PRICE,
+      //gas: 2000000,
+      //confirmations: 1,
+      timeoutBlocks: 200,
+      skipDryRun: true,
+      //maxFeePerGas: 34533376779,
+      //maxPriorityFeePerGas: 34533376772,
+      networkCheckTimeout: 100000,
+      websockets: true
+    },
+    matic: {
+	    provider: () => new HDWalletProvider([process.env.PRIVATE_KEY], process.env.HTTPS_PROVIDER_URL),
 	    network_id: 137,
       gasPrice: process.env.GAS_PRICE,        // Ropsten has a lower block limit than mainnet
 	    timeout: 1000000000,
@@ -94,6 +110,12 @@ module.exports = {
       skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
 	  },
   },
+
+  plugins: ["solidity-coverage", "truffle-plugin-verify"],
+
+  api_keys: {
+    polygonscan: process.env.POLYGONSCAN_API_KEY
+},
 
   // Set default mocha options here, use special reporters, etc.
   mocha: {
@@ -103,15 +125,15 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.14",      // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.15",      // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
-      // settings: {          // See the solidity docs for advice about optimization and evmVersion
-      //  optimizer: {
-      //    enabled: false,
-      //    runs: 200
-      //  },
+       settings: {          // See the solidity docs for advice about optimization and evmVersion
+        optimizer: {
+          enabled: false,
+          runs: 200
+      },
       //  evmVersion: "byzantium"
-      // }
+      }
     }
   },
 
