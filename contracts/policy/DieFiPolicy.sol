@@ -16,6 +16,13 @@ contract DieFiPolicy is ERC2771Context,
 
     event SubscriptionManagerUpdated(address oldSubscriptionManager, address newSubscriptionManager);
     event SetTrustedForwarder(address newTrustedForwarder);
+    event DieFiPolicyCreated(
+        bytes16 indexed policyId,
+        address indexed owner,
+        uint16 size,
+        uint32 startTimestamp,
+        uint32 endTimestamp
+    );
 
     address public subscriptionManager;
     function initialize(address _subscriptionManager) public initializer {
@@ -65,12 +72,6 @@ contract DieFiPolicy is ERC2771Context,
             _startTimestamp < _endTimestamp && block.timestamp < _endTimestamp,
             "Invalid timestamps"
         );
-        require(
-            msg.value == getPolicyCost(_size, _startTimestamp, _endTimestamp),
-            "Invalid policy cost"
-        );
-
-        _createPolicy(_policyId, _policyOwner, _size, _startTimestamp, _endTimestamp);
 
         ISubscriptionManager(subscriptionManager).createPolicy(
             _policyId,
@@ -79,5 +80,25 @@ contract DieFiPolicy is ERC2771Context,
             _startTimestamp,
             _endTimestamp
         );
+
+        emit DieFiPolicyCreated(
+            _policyId,
+            _policyOwner,
+            _size,
+            _startTimestamp,
+            _endTimestamp
+        );
+    }
+
+    function getPolicyCost(
+        uint16 _size,
+        uint32 _startTimestamp,
+        uint32 _endTimestamp
+    ) public view returns (uint256) {
+        return ISubscriptionManager(subscriptionManager).getPolicyCost(_size, _startTimestamp, _endTimestamp);
+    }
+
+    function isPolicyActive(bytes16 _policyID) public view returns(bool) {
+        return ISubscriptionManager(subscriptionManager).isPolicyActive(_policyID);
     }
 }
