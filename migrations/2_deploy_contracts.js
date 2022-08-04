@@ -1,5 +1,8 @@
+require('dotenv').config();
 const DieFiPolicy = artifacts.require('DieFiPolicy')
 const DieFiForwarder = artifacts.require('DieFiForwarder')
+
+const { RELAYER_ADDRESS, SUBSCRIPTION_MANAGER } = process.env
 
 module.exports = async function (deployer, network) {
     if (network == "development") {
@@ -8,14 +11,12 @@ module.exports = async function (deployer, network) {
     }
     
     console.log('Deploying DieFiForwarder ...')
-    await deployer.deploy(DieFiForwarder)
+    await deployer.deploy(DieFiForwarder, RELAYER_ADDRESS)
     const forwarder = await DieFiForwarder.deployed()
     console.log('DieFiForwarder deployed ...')
 
     console.log('Deploying DieFiPolicy ...')
-    await deployer.deploy(DieFiPolicy, forwarder.address, 0xb9015d7B35Ce7c81ddE38eF7136Baa3B1044f313)
+    await deployer.deploy(DieFiPolicy, forwarder.address, SUBSCRIPTION_MANAGER)
     const policy = await DieFiPolicy.deployed()
     console.log('DieFiPolicy deployed ...')
-    //await policy.initialize('0xb9015d7B35Ce7c81ddE38eF7136Baa3B1044f313')
-    //console.log('DieFiPolicy initialized ...')
 }
