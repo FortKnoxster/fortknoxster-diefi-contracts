@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "./ISubscriptionManager.sol";
 
 /**
- * FortKnoxster DieFiPolicy using meta transaction via DieFiForwarder
+ * FortKnoxster DieFiPolicy using meta transaction via DieFiForwarder.
  */
 contract DieFiPolicy is ERC2771Context, AccessControl {
 

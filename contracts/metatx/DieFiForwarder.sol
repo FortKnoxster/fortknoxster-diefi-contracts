@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 
 /**
  *
- * Using OpenZeppelin MinimalForwarder adding pause functionality and access control
+ * Based on OpenZeppelin MinimalForwarder adding pause functionality and access control
  * with relayer whitelisting. 
  * https://github.com/OpenZeppelin/openzeppelin-contracts/blob/ec825d8999538f110e572605dc56ef7bf44cc574/contracts/metatx/MinimalForwarder.sol
  */
