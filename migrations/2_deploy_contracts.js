@@ -13,9 +13,9 @@ module.exports = async function (deployer, network) {
     console.log('DieFiForwarder deployed ...')
 
     console.log('Deploying DieFiPolicy ...')
-    await deployer.deploy(DieFiPolicy, forwarder.address)
+    await deployer.deploy(DieFiPolicy, forwarder.address, 0xb9015d7B35Ce7c81ddE38eF7136Baa3B1044f313)
     const policy = await DieFiPolicy.deployed()
     console.log('DieFiPolicy deployed ...')
-    await policy.initialize('0xb9015d7B35Ce7c81ddE38eF7136Baa3B1044f313')
-    console.log('DieFiPolicy initialized ...')
+    //await policy.initialize('0xb9015d7B35Ce7c81ddE38eF7136Baa3B1044f313')
+    //console.log('DieFiPolicy initialized ...')
 }

@@ -2,17 +2,18 @@
 pragma solidity ^0.8;
 
 import "@openzeppelin/contracts/metatx/ERC2771Context.sol"; 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 import "./ISubscriptionManager.sol";
 
-contract DieFiPolicy is ERC2771Context, 
-                        Ownable, 
-                        Initializable, 
-                        AccessControlUpgradeable {
+/**
+ * FortKnoxster DieFiPolicy using meta transaction via DieFiForwarder
+ */
+contract DieFiPolicy is ERC2771Context, AccessControl {
 
-    constructor(address _trustedForwarder) ERC2771Context(_trustedForwarder) {}
+    constructor(address _trustedForwarder, address _subscriptionManager) ERC2771Context(_trustedForwarder) {
+        _setSubscriptionManager(_subscriptionManager);
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+    }
 
     event SubscriptionManagerUpdated(address oldSubscriptionManager, address newSubscriptionManager);
     event SetTrustedForwarder(address newTrustedForwarder);
@@ -21,15 +22,11 @@ contract DieFiPolicy is ERC2771Context,
         address indexed owner,
         uint16 size,
         uint32 startTimestamp,
-        uint32 endTimestamp
+        uint32 endTimestamp,
+        uint256 cost
     );
 
     address public subscriptionManager;
-    function initialize(address _subscriptionManager) public initializer {
-        _setSubscriptionManager(_subscriptionManager);
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        //_setTrustedForwarder(_trustedForwarder);
-    }
 
     function _setSubscriptionManager(address newSubscriptionManager) internal {
         address oldSubscriptionManager = subscriptionManager;
@@ -41,23 +38,13 @@ contract DieFiPolicy is ERC2771Context,
         _setSubscriptionManager(_subscriptionManager);
     }
 
-    function _msgSender() internal view virtual override (ERC2771Context, ContextUpgradeable, Context) returns (address sender) {
+    function _msgSender() internal view override (ERC2771Context, Context) returns (address sender) {
         return super._msgSender();
     }
 
-    function _msgData() internal view virtual override (ERC2771Context, ContextUpgradeable, Context) returns (bytes calldata) {
+    function _msgData() internal view override (ERC2771Context, Context) returns (bytes calldata) {
         return super._msgData();
     }
-    /*
-    function _setTrustedForwarder(address newTrustedForwarder) internal {
-        trustedForwarder = newTrustedForwarder;
-        emit SetTrustedForwarder(newTrustedForwarder);
-    }
-
-    function setTrustedForwarder(address _trustedForwarder) onlyRole(DEFAULT_ADMIN_ROLE) external {
-        _setTrustedForwarder(_trustedForwarder);
-    }
-    */
 
     function createPolicy(
         bytes16 _policyId,
@@ -73,7 +60,7 @@ contract DieFiPolicy is ERC2771Context,
             "Invalid timestamps"
         );
 
-        ISubscriptionManager(subscriptionManager).createPolicy(
+        ISubscriptionManager(subscriptionManager).createPolicy{value: msg.value }(
             _policyId,
             _policyOwner,
             _size,
@@ -86,7 +73,8 @@ contract DieFiPolicy is ERC2771Context,
             _policyOwner,
             _size,
             _startTimestamp,
-            _endTimestamp
+            _endTimestamp,
+            msg.value
         );
     }
 
@@ -98,7 +86,7 @@ contract DieFiPolicy is ERC2771Context,
         return ISubscriptionManager(subscriptionManager).getPolicyCost(_size, _startTimestamp, _endTimestamp);
     }
 
-    function isPolicyActive(bytes16 _policyID) public view returns(bool) {
-        return ISubscriptionManager(subscriptionManager).isPolicyActive(_policyID);
+    function isPolicyActive(bytes16 _policyId) public view returns(bool) {
+        return ISubscriptionManager(subscriptionManager).isPolicyActive(_policyId);
     }
 }

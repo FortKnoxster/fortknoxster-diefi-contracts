@@ -34,8 +34,7 @@
     "eslint": "^8.19.0",
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.6.9",
-    "hardhat": "^2.9.9",
-    "solidity-coverage": "^0.7.21",
+    "solidity-coverage": "^0.6.7",
     "truffle": "^5.1.65"
   },
   "dependencies": {

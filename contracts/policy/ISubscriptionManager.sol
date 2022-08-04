@@ -18,6 +18,6 @@ interface ISubscriptionManager {
         uint32 _endTimestamp
     ) external payable;
 
-    function isPolicyActive(bytes16 _policyID) external view returns(bool);
+    function isPolicyActive(bytes16 _policyId) external view returns(bool);
 
 }
