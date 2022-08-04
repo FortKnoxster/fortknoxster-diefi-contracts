@@ -52,9 +52,11 @@ contract DieFiForwarder is EIP712, AccessControl, Pausable {
     function execute(ForwardRequest calldata req, bytes calldata signature)
         public
         payable
+        whenNotPaused()
+        onlyRole(RELAY_ROLE)
         returns (bool, bytes memory)
     {
-        require(verify(req, signature), "MinimalForwarder: signature does not match request");
+        require(verify(req, signature), "DieFiForwarder: signature does not match request");
         _nonces[req.from] = req.nonce + 1;
 
         (bool success, bytes memory returndata) = req.to.call{gas: req.gas, value: req.value}(
