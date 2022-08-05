@@ -9,6 +9,8 @@ const DieFiPolicy = artifacts.require('DieFiPolicy');
 const DieFiForwarder = artifacts.require('DieFiForwarder');
 const contractAddress = '0xb3C5653Fa2Ca081d1313bcB67914c1a914b8Abfa'
 
+// https://github.com/pcaversaccio/metatx/blob/main/test/Forwarder.test.js
+
 // Start test block
 contract('DieFiPolicy', function([owner, other]){
     //const WRITER_ROLE = utils.keccak256(utils.toUtf8Bytes("WRITER_ROLE"));
