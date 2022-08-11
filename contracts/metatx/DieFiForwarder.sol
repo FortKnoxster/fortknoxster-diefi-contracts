@@ -33,12 +33,12 @@ contract DieFiForwarder is EIP712, AccessControl, Pausable {
 
     event MetaTransactionExecuted(address indexed from, address indexed to, bytes indexed data);
 
-    constructor(address _trustedRelayer) EIP712("DieFiForwarder", "0.0.1") {
+    constructor(address _trustedRelayer) EIP712("DieFiForwarder", "4") {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _setupRole(RELAY_ROLE, _trustedRelayer);
     }
 
-        function getNonce(address from) public view returns (uint256) {
+    function getNonce(address from) public view returns (uint256) {
         return _nonces[from];
     }
 
