@@ -4,14 +4,16 @@ const DieFiForwarder = artifacts.require('DieFiForwarder')
 
 const { RELAYER_ADDRESS, SUBSCRIPTION_MANAGER } = process.env
 
-module.exports = async function (deployer, network) {
+module.exports = async function (deployer, network, accounts) {
+    console.log('network', network)
+    console.log('accounts', accounts)
     if (network == "development") {
         console.log('Skipping migrations "2_deploy_contracts"...')
         return; // test maintains own contracts
     }
     
     console.log('Deploying DieFiForwarder ...')
-    await deployer.deploy(DieFiForwarder, RELAYER_ADDRESS)
+    await deployer.deploy(DieFiForwarder, accounts[1])
     const forwarder = await DieFiForwarder.deployed()
     console.log('DieFiForwarder deployed ...')
 
