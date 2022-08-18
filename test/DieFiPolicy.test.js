@@ -1,27 +1,53 @@
 const { expect } = require('chai');
 const { utils } = require('ethers');
+const addMonths = require('date-fns/addMonths')
+require('dotenv').config();
+
+const { FORWARDER_CONTRACT, POLICY_CONTRACT, RELAYER_ADDRESS } = process.env
+
+console.log({FORWARDER_CONTRACT, POLICY_CONTRACT, RELAYER_ADDRESS})
 
 // Import utilities from Test Helpers
 const { expectEvent, expectRevert } = require('@openzeppelin/test-helpers');
 
-// Load FKXIdentity artifact
+const SHARES = 3 // threshold shares
+
+// Load DieFiPolicy & DieFiForwarder artifacts
 const DieFiPolicy = artifacts.require('DieFiPolicy');
 const DieFiForwarder = artifacts.require('DieFiForwarder');
-const contractAddress = '0xb3C5653Fa2Ca081d1313bcB67914c1a914b8Abfa'
+
+function getRandomPolicyId() {
+    return utils.hexlify(utils.randomBytes(16));
+}
+
+function toEpoch(date) {
+    return (date.getTime() / 1000) | 0
+}
+
+function getTimestamps(months) {
+    const now = new Date()
+    const startDate = addMonths(now, months)
+    const endDate = addMonths(now, months + months)
+    return {
+        startTimestamp: toEpoch(startDate),
+        endTimestamp: toEpoch(endDate)
+    }
+}
 
 // https://github.com/pcaversaccio/metatx/blob/main/test/Forwarder.test.js
 
 // Start test block
-contract('DieFiPolicy', function([owner, other]){
+contract('DieFiPolicy', function(accounts){
     //const WRITER_ROLE = utils.keccak256(utils.toUtf8Bytes("WRITER_ROLE"));
     let policyId, policyOwner, size, startTimestamp, endTimestamp;
-    console.log('DieFiPolicy testing ...', owner)
+    console.log(accounts)
+    console.log('DieFiPolicy testing ...', accounts[|])
     before(async function() {
         //this.diefiForwarder = await DieFiForwarder.new({ from: owner });
-        this.diefiForwarder = await DieFiForwarder.at('0x91e3B550B11659ae8f91917C74867A704069C301');
+        this.diefiForwarder = await DieFiForwarder.at(FORWARDER_CONTRACT);
         console.log('DieFiForwarder contract created or loaded ...', this.diefiForwarder.address)
         //this.diefiPolicy = await DieFiPolicy.new(this.diefiForwarder.address, { from: owner });
-        this.diefiPolicy = await DieFiPolicy.at('0xA2217b74CeF9f931aF16aD0B2cEdD7625a12D8cA')
+        this.diefiPolicy = await DieFiPolicy.at(POLICY_CONTRACT)
         console.log('DieFiPolicy contract created or loaded ...', this.diefiPolicy.address)
     })
 
@@ -36,15 +62,17 @@ contract('DieFiPolicy', function([owner, other]){
 
     describe('Testing `createPolicy` function', function() {
         beforeEach(function() {            
-            policyId = '0x06a9e1a8b978d3704e86d5f967929a55'
+            policyId = getRandomPolicyId()
             policyOwner = owner
-            size = 7
-            startTimestamp = 1657238251 // Friday, July 8, 2022 1:57:31 AM GMT+02:00 DST
-            endTimestamp = 1662028251 // Thursday, September 1, 2022 12:30:51 PM GMT+02:00 DST
+            size = SHARES
+            timestamps = getTimestamps(2)
+            startTimestamp = timestamps.startTimestamp
+            endTimestamp = timestamps.startTimendTimestampestamp
+            console.log('test', {policyId, policyOwner, size, startTimestamp, endTimestamp})
         });
 
         it('function `createPolicy` has successfully created policy', async function () {
-            const saved = await this.diefiPolicy.createPolicy(policyId, policyOwner, size, startTimestamp, endTimestamp, { from: owner });
+            const saved = await this.diefiPolicy.createPolicy(policyId, policyOwner, size, startTimestamp, endTimestamp, { from: accounts[1] });
             expectEvent(saved, 'DieFiPolicyCreated', { policyId, policyOwner, size, startTimestamp, endTimestamp });
         });
 /*
