@@ -2,7 +2,7 @@
 
 FortKnoxster DieFi smart contract on Polygon for managing a decentralized Dead Man's Switch using gasless meta transactions.
 
-To create a policy for the DieFi Dead Man's Switch, the client browser/user prepares and signs an [EIP-2771](https://eips.ethereum.org/EIPS/eip-2771) meta transaction using [EIP-712](https://eips.ethereum.org/EIPS/eip-712) typed structured data hashing and signing, and sends it to a relayer/payer. The relayer verifies the signed transaction and sends it to the DieFiForwarder who verifies the relayer is trusted and also verifies the signed transaction. The DieFiForwarder executes the transaction sending it to the DieFiPolicy which in turn sends it to Threshold's SubscriptionManager.
+To create a policy for the DieFi Dead Man's Switch, the client browser/user prepares and signs an [EIP-2771](https://eips.ethereum.org/EIPS/eip-2771) meta transaction using [EIP-712](https://eips.ethereum.org/EIPS/eip-712) typed structured data hashing and signing, and sends it to a relayer/payer. The relayer verifies the signed transaction and sends it to the DieFiForwarder which verifies that the relayer is trusted and also verifies the client signed transaction. The DieFiForwarder executes the transaction sending it to the DieFiPolicy which in turn sends it to the Threshold's SubscriptionManager.
 
 The final policy created, consists of time-based conditions according to the Dead Man's Switch timer settings and the size of the threshold shares on the Threshold decentralized network.
 
