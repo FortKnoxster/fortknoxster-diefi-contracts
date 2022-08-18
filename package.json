@@ -4,7 +4,7 @@
   "description": "FortKnoxster DieFi smart contracts.",
   "main": "truffle-config.js",
   "directories": {
-    "test": "test"
+    "test": "mocha test/DieFiPolicy.test.js"
   },
   "scripts": {
     "coverage": "truffle run coverage",
@@ -25,17 +25,19 @@
   },
   "homepage": "https://github.com/FortKnoxster/fortknoxster-diefi-contracts#readme",
   "devDependencies": {
-    "@openzeppelin/contracts": "^4.7.0",
-    "@openzeppelin/test-helpers": "^0.5.15",
-    "chai": "^4.3.6",
     "eslint": "^8.19.0",
-    "ethers": "^5.6.9",
     "solidity-coverage": "^0.7.21",
     "truffle": "^5.5.25"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^4.7.0",
+    "@openzeppelin/test-helpers": "^0.5.15",
     "@truffle/hdwallet-provider": "^2.0.10",
+    "chai": "^4.3.6",
+    "date-fns": "^2.29.1",
     "dotenv": "^16.0.1",
+    "ethereum-input-data-decoder": "^0.4.2",
+    "ethers": "^5.6.9",
     "mocha": "^10.0.0",
     "truffle-plugin-verify": "^0.5.26"
   }
