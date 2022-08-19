@@ -1,4 +1,4 @@
-# Fortknoxster Diefi Contracts
+# FortKnoxster Diefi Contracts
 
 FortKnoxster DieFi smart contract on Polygon for managing a decentralized Dead Man's Switch using gasless meta transactions.
 
