@@ -9,7 +9,7 @@ The final policy created, consists of time-based conditions according to the Dea
 
 ## Mumbai testnet
 
-The DieFiForwarder contract is loated here:
+The DieFiForwarder contract is located here:
 
 https://mumbai.polygonscan.com/address/0xd5f9268e1d55736d51cfb38f27bb6cd325bd6fe0
 
@@ -17,7 +17,7 @@ The DieFiPolicy contract is located here:
 
 https://mumbai.polygonscan.com/address/0x2698af21d7e2bf325a758382591d6df9f8dc3692
 
-The NuCypher/Threshold SubscriptionManager is loated here:
+The NuCypher/Threshold SubscriptionManager is located here:
 
 https://mumbai.polygonscan.com/address/0xb9015d7b35ce7c81dde38ef7136baa3b1044f313
 
