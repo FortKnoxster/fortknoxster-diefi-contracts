@@ -16,7 +16,7 @@ contract DieFiPolicy is ERC2771Context, AccessControl {
     }
 
     event SubscriptionManagerUpdated(address oldSubscriptionManager, address newSubscriptionManager);
-    event SetTrustedForwarder(address newTrustedForwarder);
+
     event DieFiPolicyCreated(
         bytes16 indexed policyId,
         address indexed owner,
@@ -56,10 +56,13 @@ contract DieFiPolicy is ERC2771Context, AccessControl {
         external payable
     {
         require(
-            _startTimestamp < _endTimestamp && block.timestamp < _endTimestamp,
+            _startTimestamp < _endTimestamp && 
+            block.timestamp < _endTimestamp && 
+            _startTimestamp > block.timestamp,
             "Invalid timestamps"
         );
-
+        
+        // Policy cost is validated in remote SubscriptionManager
         ISubscriptionManager(subscriptionManager).createPolicy{value: msg.value }(
             _policyId,
             _policyOwner,
@@ -88,5 +91,9 @@ contract DieFiPolicy is ERC2771Context, AccessControl {
 
     function isPolicyActive(bytes16 _policyId) public view returns(bool) {
         return ISubscriptionManager(subscriptionManager).isPolicyActive(_policyId);
+    }
+
+    function getPolicy(bytes16 _policyId) public view returns(ISubscriptionManager.Policy memory){
+        return ISubscriptionManager(subscriptionManager).getPolicy(_policyId);
     }
 }
