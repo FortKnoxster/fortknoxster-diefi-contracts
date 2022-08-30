@@ -2,7 +2,7 @@ require('dotenv').config();
 const DieFiPolicy = artifacts.require('DieFiPolicy')
 const DieFiForwarder = artifacts.require('DieFiForwarder')
 
-const { RELAYER_ADDRESS, SUBSCRIPTION_MANAGER } = process.env
+const { SUBSCRIPTION_MANAGER } = process.env
 
 module.exports = async function (deployer, network, accounts) {
     console.log('network', network)

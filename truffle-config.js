@@ -102,7 +102,7 @@ module.exports = {
       websockets: true
     },
     matic: {
-	    provider: () => new HDWalletProvider([process.env.PRIVATE_KEY], process.env.HTTPS_PROVIDER_URL),
+	    provider: () => new HDWalletProvider([process.env.MNEMONIC], process.env.HTTPS_PROVIDER_URL),
 	    network_id: 137,
       gasPrice: process.env.GAS_PRICE,        // Ropsten has a lower block limit than mainnet
 	    timeout: 1000000000,
