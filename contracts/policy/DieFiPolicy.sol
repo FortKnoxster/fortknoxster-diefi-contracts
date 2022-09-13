@@ -3,12 +3,13 @@ pragma solidity ^0.8;
 
 import "@openzeppelin/contracts/metatx/ERC2771Context.sol"; 
 import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./ISubscriptionManager.sol";
 
 /**
  * FortKnoxster DieFiPolicy using meta transaction via DieFiForwarder.
  */
-contract DieFiPolicy is ERC2771Context, AccessControl {
+contract DieFiPolicy is ERC2771Context, AccessControl, ReentrancyGuard {
 
     constructor(address _trustedForwarder, address _subscriptionManager) ERC2771Context(_trustedForwarder) {
         _setSubscriptionManager(_subscriptionManager);
@@ -33,7 +34,7 @@ contract DieFiPolicy is ERC2771Context, AccessControl {
         subscriptionManager = newSubscriptionManager;
         emit SubscriptionManagerUpdated(oldSubscriptionManager, newSubscriptionManager);
     }
-
+    // Remove
     function setSubscriptionManager(address _subscriptionManager) onlyRole(DEFAULT_ADMIN_ROLE) external {
         _setSubscriptionManager(_subscriptionManager);
     }
@@ -53,7 +54,9 @@ contract DieFiPolicy is ERC2771Context, AccessControl {
         uint32 _startTimestamp,
         uint32 _endTimestamp
     )
-        external payable
+        external 
+        payable
+        nonReentrant
     {
         require(
             _startTimestamp < _endTimestamp && 
