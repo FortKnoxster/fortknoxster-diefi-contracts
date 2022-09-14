@@ -1,19 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
 
-import "@openzeppelin/contracts/metatx/ERC2771Context.sol"; 
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./ISubscriptionManager.sol";
 
 /**
  * FortKnoxster DieFiPolicy using meta transaction via DieFiForwarder.
  */
-contract DieFiPolicy is ERC2771Context, AccessControl, ReentrancyGuard {
+contract DieFiPolicy is ERC2771Context, ReentrancyGuard {
 
     constructor(address _trustedForwarder, address _subscriptionManager) ERC2771Context(_trustedForwarder) {
         _setSubscriptionManager(_subscriptionManager);
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
     event SubscriptionManagerUpdated(address oldSubscriptionManager, address newSubscriptionManager);
@@ -34,16 +32,12 @@ contract DieFiPolicy is ERC2771Context, AccessControl, ReentrancyGuard {
         subscriptionManager = newSubscriptionManager;
         emit SubscriptionManagerUpdated(oldSubscriptionManager, newSubscriptionManager);
     }
-    // Remove
-    function setSubscriptionManager(address _subscriptionManager) onlyRole(DEFAULT_ADMIN_ROLE) external {
-        _setSubscriptionManager(_subscriptionManager);
-    }
 
-    function _msgSender() internal view override (ERC2771Context, Context) returns (address sender) {
+    function _msgSender() internal view override (ERC2771Context) returns (address sender) {
         return super._msgSender();
     }
 
-    function _msgData() internal view override (ERC2771Context, Context) returns (bytes calldata) {
+    function _msgData() internal view override (ERC2771Context) returns (bytes calldata) {
         return super._msgData();
     }
 

@@ -4,16 +4,15 @@ pragma solidity ^0.8;
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /**
  *
- * Based on OpenZeppelin MinimalForwarder adding pause functionality and access control
+ * Based on OpenZeppelin MinimalForwarder adding access control functionality 
  * with relayer whitelisting. 
  * https://github.com/OpenZeppelin/openzeppelin-contracts/blob/ec825d8999538f110e572605dc56ef7bf44cc574/contracts/metatx/MinimalForwarder.sol
  */
-contract DieFiForwarder is EIP712, AccessControl, Pausable, ReentrancyGuard {
+contract DieFiForwarder is EIP712, AccessControl, ReentrancyGuard {
      using ECDSA for bytes32;
 
     struct ForwardRequest {
@@ -49,11 +48,10 @@ contract DieFiForwarder is EIP712, AccessControl, Pausable, ReentrancyGuard {
         ).recover(signature);
         return _nonces[req.from] == req.nonce && signer == req.from;
     }
-    // Major
+
     function execute(ForwardRequest calldata req, bytes calldata signature)
         public
         payable
-        whenNotPaused()
         onlyRole(RELAY_ROLE)
         nonReentrant
         returns (bool, bytes memory)
@@ -81,19 +79,4 @@ contract DieFiForwarder is EIP712, AccessControl, Pausable, ReentrancyGuard {
 
         return (success, returndata);
     }
-    // Major
-    /**
-     * Pause meta transaction exection,
-     */
-    function pause() onlyRole(DEFAULT_ADMIN_ROLE) public virtual whenNotPaused {
-        super._pause();
-    }
-    // Major
-    /**
-     * Unpause meta transaction exection,
-     */
-    function unpause() onlyRole(DEFAULT_ADMIN_ROLE) public virtual whenPaused {
-        super._unpause();
-    }
-
 }
