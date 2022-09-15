@@ -11,11 +11,11 @@ The final policy created, consists of time-based conditions according to the Dea
 
 The DieFiForwarder contract is located here:
 
-https://mumbai.polygonscan.com/address/0x83313476C908cDC26deF195beb91F0Ed239597A4
+https://mumbai.polygonscan.com/address/0xF33a2809677f2638066D05e73169DeB4dB34F100
 
 The DieFiPolicy contract is located here:
 
-https://mumbai.polygonscan.com/address/0x2F59D44CCC0ade6198C3a48f226cc7D6c9E9f5B6
+https://mumbai.polygonscan.com/address/0xDF079200668435f53B6cDaE47fD5fF86da45fF78
 
 The NuCypher/Threshold SubscriptionManager is located here:
 
