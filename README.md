@@ -23,7 +23,29 @@ https://mumbai.polygonscan.com/address/0xb9015d7b35ce7c81dde38ef7136baa3b1044f31
 
 
 ## Polygon mainnet
-Pending mainnet deployment
 
-## Tests
-Pending
+The DieFiForwarder contract is located here:
+
+https://polygonscan.com/address/0x85B8a43D660cB7af53403fC3093513f59129e2ED
+
+The DieFiPolicy contract is located here:
+
+https://polygonscan.com/address/0x81Ae8458B363Ba3fa83F373Ce5a8C2856a7043A2
+
+The NuCypher/Threshold SubscriptionManager is located here:
+
+https://polygonscan.com/address/0xB0194073421192F6Cf38d72c791Be8729721A0b3
+
+## Deployment notes
+
+Deploy contracts
+
+```
+truffle migrate --network matic --reset
+```
+
+Verify contracts on Polygonscan.com
+
+```
+truffle run verify DieFiForwarder DieFiPolicy --network matic
+```
