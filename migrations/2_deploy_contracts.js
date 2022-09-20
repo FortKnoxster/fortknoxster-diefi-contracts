@@ -13,7 +13,7 @@ module.exports = async function (deployer, network, accounts) {
     }
     
     console.log('Deploying DieFiForwarder ...')
-    await deployer.deploy(DieFiForwarder, accounts[1])
+    await deployer.deploy(DieFiForwarder)
     const forwarder = await DieFiForwarder.deployed()
     console.log('DieFiForwarder deployed ...')
 

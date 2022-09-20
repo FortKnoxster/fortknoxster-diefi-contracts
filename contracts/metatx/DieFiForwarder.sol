@@ -3,16 +3,14 @@ pragma solidity ^0.8;
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /**
  *
- * Based on OpenZeppelin MinimalForwarder adding access control functionality 
- * with relayer whitelisting. 
+ * Based on OpenZeppelin MinimalForwarder. 
  * https://github.com/OpenZeppelin/openzeppelin-contracts/blob/ec825d8999538f110e572605dc56ef7bf44cc574/contracts/metatx/MinimalForwarder.sol
  */
-contract DieFiForwarder is EIP712, AccessControl, ReentrancyGuard {
+contract DieFiForwarder is EIP712, ReentrancyGuard {
      using ECDSA for bytes32;
 
     struct ForwardRequest {
@@ -27,16 +25,11 @@ contract DieFiForwarder is EIP712, AccessControl, ReentrancyGuard {
     bytes32 private constant _TYPEHASH =
         keccak256("ForwardRequest(address from,address to,uint256 value,uint256 gas,uint256 nonce,bytes data)");
 
-    bytes32 public constant RELAY_ROLE = keccak256("Power to relay meta transactions");
-
     mapping(address => uint256) private _nonces;
 
     event MetaTransactionExecuted(address indexed from, address indexed to, bytes indexed data);
 
-    constructor(address _trustedRelayer) EIP712("DieFiForwarder", "4") {
-        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _setupRole(RELAY_ROLE, _trustedRelayer);
-    }
+    constructor() EIP712("DieFiForwarder", "4") {}
 
     function getNonce(address from) public view returns (uint256) {
         return _nonces[from];
@@ -52,7 +45,6 @@ contract DieFiForwarder is EIP712, AccessControl, ReentrancyGuard {
     function execute(ForwardRequest calldata req, bytes calldata signature)
         public
         payable
-        onlyRole(RELAY_ROLE)
         nonReentrant
         returns (bool, bytes memory)
     {

@@ -26,8 +26,8 @@
   "homepage": "https://github.com/FortKnoxster/fortknoxster-diefi-contracts#readme",
   "devDependencies": {
     "eslint": "^8.19.0",
-    "solidity-coverage": "^0.7.21",
-    "truffle": "^5.5.25"
+    "solidity-coverage": "^0.8.2",
+    "truffle": "^5.5.16"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.0",
