@@ -113,7 +113,7 @@ module.exports = {
 	  },
   },
 
-  plugins: ["solidity-coverage", "truffle-plugin-verify"],
+  plugins: ["truffle-plugin-verify"],
 
   api_keys: {
     polygonscan: process.env.POLYGONSCAN_API_KEY

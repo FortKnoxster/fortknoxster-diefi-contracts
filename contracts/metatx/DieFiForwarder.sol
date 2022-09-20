@@ -29,7 +29,7 @@ contract DieFiForwarder is EIP712, ReentrancyGuard {
 
     event MetaTransactionExecuted(address indexed from, address indexed to, bytes indexed data);
 
-    constructor(address _trustedRelayer) EIP712("DieFiForwarder", "4") {}
+    constructor() EIP712("DieFiForwarder", "4") {}
 
     function getNonce(address from) public view returns (uint256) {
         return _nonces[from];
